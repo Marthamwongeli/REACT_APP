@@ -15,9 +15,7 @@ const Users= () =>{
                 key={user.id}
                 image={user.image}
                 fullName={`${user.firstName} ${user.lastName}`}
-                age = {`${user.age}`}
-                gender = {`${user.gender}`}
-                email = {`${user.email}`}
+                
                 />
             ))
             : !loading && <h2>Users not found</h2>}

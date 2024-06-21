@@ -1,40 +1,45 @@
 import './index.css';
 import { useState } from 'react';
-import {login} from './utils';
-import { Link } from 'react-router-dom';
+import { login } from './utils';
 
 
+function Login ({onLoginSuccess}){
+
+const [username,setUsername] = useState('');
+const [password,setPassword] = useState('');
+const [modalIsOpen, setModalIsOpen] = useState(false);
+const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+const handleSubmit = async (event) => {
+event.preventDefault();
+const results = await login ({username,password})
+onLoginSuccess();
 
 
-const Login= ()=>{
-    // help you remember
-    const [username,setUsername] = useState('');
-    const [password,setPassword]= useState('');
-
-
-    const handleSubmit = async(event) =>{
-        event.preventDefault();
-        const results = await login({username,password});
-        navigate('./users')
-        console.log({results});
+if (results.token){
+    localStorage.setItem('token', results.token)
+    setIsLoggedIn(true)
+    setModalIsOpen(false)
     }
-    return(
-        <form onSubmit={handleSubmit}>
-            
-            <h2>Login</h2>
-            <Link to="/users"> <button type="submit">Login</button> </Link>
-            <input placeholder="Enter username" type="text" onChange={(event) => setUsername(event.target.value)}/>
-            {/* to help us remember what the user inputed */}
-            <br/>
-            <input placeholder="Enter password" type="password" onChange={(event) => setPassword(event.target.value)}/>
-            <br/>
+};
 
-            
+return(
+    <div>
+   
+    <form onSubmit={handleSubmit}>
+        {/* <h2>Login</h2> */}
+        <input placeholder="Enter Username" type="text" onChange={(event)=> setUsername(event.target.value)}/>
+        <br/>
+        <input placeholder="Enter Password" type="password" onChange={(event)=> setPassword(event.target.value)}/>
+        <br/>
+        <button type="submit">Login</button>
 
-        </form>
-    )
+    </form>
+    
+    </div>
+
+);
+
 }
 
 export default Login;
-
-
